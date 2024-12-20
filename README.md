@@ -1,8 +1,8 @@
 # What is wallabag?
 
-![CI](https://github.com/wallabag/docker/workflows/CI/badge.svg)
-[![Docker Stars](https://img.shields.io/docker/stars/wallabag/wallabag.svg?maxAge=2592000)](https://hub.docker.com/r/wallabag/wallabag/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/wallabag/wallabag.svg?maxAge=2592000)](https://hub.docker.com/r/wallabag/wallabag/)
+![CI](https://github.com/thinkthinking/wallabag/workflows/CI/badge.svg)
+[![Docker Stars](https://img.shields.io/docker/stars/thinkthinking/wallabag.svg?maxAge=2592000)](https://hub.docker.com/r/thinkthinking/wallabag/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/thinkthinking/wallabag.svg?maxAge=2592000)](https://hub.docker.com/r/thinkthinking/wallabag/)
 
 [wallabag](https://www.wallabag.org/) is a self hostable application for saving web pages. Unlike other services, wallabag is free (as in freedom) and open source.
 
@@ -48,13 +48,13 @@ Default login is `wallabag:wallabag`.
 The easiest way to start wallabag is to use the SQLite backend. You can spin that up with
 
 ```
-$ docker run -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" wallabag/wallabag
+$ docker run -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" thinkthinking/wallabag
 ```
 
 and point your browser to `http://localhost`. For persistent storage you should start the container with a volume:
 
 ```
-$ docker run -v /opt/wallabag/data:/var/www/wallabag/data -v /opt/wallabag/images:/var/www/wallabag/web/assets/images -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" wallabag/wallabag
+$ docker run -v /opt/wallabag/data:/var/www/wallabag/data -v /opt/wallabag/images:/var/www/wallabag/web/assets/images -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" thinkthinking/wallabag
 ```
 
 ## MariaDB / MySQL
@@ -63,7 +63,7 @@ For using MariaDB or MySQL you have to define some environment variables with th
 
 ```
 $ docker run --name wallabag-db -e "MYSQL_ROOT_PASSWORD=my-secret-pw" -d mariadb
-$ docker run --name wallabag --link wallabag-db:wallabag-db -e "MYSQL_ROOT_PASSWORD=my-secret-pw" -e "SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql" -e "SYMFONY__ENV__DATABASE_HOST=wallabag-db" -e "SYMFONY__ENV__DATABASE_PORT=3306" -e "SYMFONY__ENV__DATABASE_NAME=wallabag" -e "SYMFONY__ENV__DATABASE_USER=wallabag" -e "SYMFONY__ENV__DATABASE_PASSWORD=wallapass" -e "SYMFONY__ENV__DATABASE_CHARSET=utf8mb4" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" -p 80:80 wallabag/wallabag
+$ docker run --name wallabag --link wallabag-db:wallabag-db -e "MYSQL_ROOT_PASSWORD=my-secret-pw" -e "SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql" -e "SYMFONY__ENV__DATABASE_HOST=wallabag-db" -e "SYMFONY__ENV__DATABASE_PORT=3306" -e "SYMFONY__ENV__DATABASE_NAME=wallabag" -e "SYMFONY__ENV__DATABASE_USER=wallabag" -e "SYMFONY__ENV__DATABASE_PASSWORD=wallapass" -e "SYMFONY__ENV__DATABASE_CHARSET=utf8mb4" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" -p 80:80 thinkthinking/wallabag
 ```
 
 ## PostgreSQL
@@ -72,7 +72,7 @@ For using PostgreSQL you have to define some environment variables with the cont
 
 ```
 $ docker run --name wallabag-db -e "POSTGRES_PASSWORD=my-secret-pw" -e "POSTGRES_USER=my-super-user" -d postgres:9.6
-$ docker run --name wallabag --link wallabag-db:wallabag-db -e "POSTGRES_PASSWORD=my-secret-pw" -e "POSTGRES_USER=my-super-user" -e "SYMFONY__ENV__DATABASE_DRIVER=pdo_pgsql" -e "SYMFONY__ENV__DATABASE_HOST=wallabag-db" -e "SYMFONY__ENV__DATABASE_PORT=5432" -e "SYMFONY__ENV__DATABASE_NAME=wallabag" -e "SYMFONY__ENV__DATABASE_USER=wallabag" -e "SYMFONY__ENV__DATABASE_PASSWORD=wallapass" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" -p 80:80 wallabag/wallabag
+$ docker run --name wallabag --link wallabag-db:wallabag-db -e "POSTGRES_PASSWORD=my-secret-pw" -e "POSTGRES_USER=my-super-user" -e "SYMFONY__ENV__DATABASE_DRIVER=pdo_pgsql" -e "SYMFONY__ENV__DATABASE_HOST=wallabag-db" -e "SYMFONY__ENV__DATABASE_PORT=5432" -e "SYMFONY__ENV__DATABASE_NAME=wallabag" -e "SYMFONY__ENV__DATABASE_USER=wallabag" -e "SYMFONY__ENV__DATABASE_PASSWORD=wallapass" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" -p 80:80 thinkthinking/wallabag
 ```
 
 ## Redis
@@ -81,13 +81,13 @@ To use redis with a Docker link, a redis container with the name `redis` is need
 
  ```
 $ docker run -p 6379:6379 --name redis redis:alpine
-$ docker run -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" --link redis:redis wallabag/wallabag
+$ docker run -p 80:80 -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" --link redis:redis thinkthinking/wallabag
 ```
 
 To use redis with an external redis host, set the appropriate environmental variables. Example:
 
 ```
-$ docker run -p 80:80 -e "SYMFONY__ENV__REDIS_HOST=my.server.hostname" -e "SYMFONY__ENV__REDIS_PASSWORD=my-secret-pw" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" wallabag/wallabag
+$ docker run -p 80:80 -e "SYMFONY__ENV__REDIS_HOST=my.server.hostname" -e "SYMFONY__ENV__REDIS_PASSWORD=my-secret-pw" -e "SYMFONY__ENV__DOMAIN_NAME=http://localhost" thinkthinking/wallabag
 ```
 
 ## Upgrading
@@ -95,7 +95,7 @@ $ docker run -p 80:80 -e "SYMFONY__ENV__REDIS_HOST=my.server.hostname" -e "SYMFO
 If there is a version upgrade that needs a database migration. The most easy way to do is running the `migrate` command:
 
 ```
-$ docker run --link wallabag-db:wallabag-db -e <... your config variables here ...>  wallabag/wallabag migrate
+$ docker run --link wallabag-db:wallabag-db -e <... your config variables here ...>  thinkthinking/wallabag migrate
 ```
 
 Or you can start the container with the new image and run the migration command manually:
@@ -112,7 +112,7 @@ An example [docker-compose](https://docs.docker.com/compose/) file can be seen b
 version: '3'
 services:
   wallabag:
-    image: wallabag/wallabag
+    image: thinkthinking/wallabag
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=wallaroot
@@ -188,6 +188,6 @@ server {
 
 To run the [async redis import worker](https://doc.wallabag.org/en/admin/asynchronous.html#install-redis-for-asynchronous-tasks) use the following command:
 ```
-$ docker run --name wallabag --link wallabag-db:wallabag-db --link redis:redis -e <... your config variables here ...>  wallabag/wallabag import <type>
+$ docker run --name wallabag --link wallabag-db:wallabag-db --link redis:redis -e <... your config variables here ...>  thinkthinking/wallabag import <type>
 ```
 Where `<type>` is one of pocket, readability, instapaper, wallabag_v1, wallabag_v2, firefox or chrome.

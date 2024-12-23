@@ -27,9 +27,9 @@ parameters:
     fosuser_confirmation: ${SYMFONY__ENV__FOSUSER_CONFIRMATION:-true}
 
     # how long the access token should live in seconds for the API
-    fos_oauth_server_access_token_lifetime: 3153600000 # 3153600000
+    fos_oauth_server_access_token_lifetime: 315360000 # 3153600000
     # how long the refresh token should life in seconds for the API
-    fos_oauth_server_refresh_token_lifetime: 3153600000 # 3153600000
+    fos_oauth_server_refresh_token_lifetime: 315360000 # 3153600000
 
     from_email: ${SYMFONY__ENV__FROM_EMAIL:-no-reply@wallabag.org}
 
